@@ -42,9 +42,13 @@ public class SpellChecker
        
     Scanner lancashire = new Scanner(new BufferedReader(new FileReader("./data/the-lancashire-cotton-famine.txt")));
     Scanner wit = new Scanner(new BufferedReader(new FileReader("./data/wit-attendance-policy.txt")));
+    Scanner sources = new Scanner(new BufferedReader(new FileReader("./data/sources.txt")));
+
     
     Object[] lancashireArray = toArray(lancashire);
     Object[] witArray = toArray(wit);
+    Object[] sourcesArray = toArray(sources);
+
 
     for(int i = 0; i < witArray.length; i++) {
     if(!dictionaryBag.contains((String) witArray[i] ))
@@ -63,6 +67,15 @@ public class SpellChecker
         }
         
     }
+    
+    if(!dictionaryBag.contains((String) sourcesArray[i] ))
+        {
+            if(!incorrectSpellingBag.contains((String) sourcesArray[i]))
+            incorrectSpellingBag.add((String) sourcesArray[i] );
+            System.out.println( sourcesArray[i] ) ;
+        }
+    }
+	    
     
     System.out.println( "================" ) ;
         
