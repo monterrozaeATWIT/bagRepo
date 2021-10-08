@@ -17,6 +17,8 @@ import java.util.Scanner ;
  */
 public class Dictionary
     {
+
+        static BagInterface<String> dictionaryBagResult = new ResizableArrayBag<>(10_000);
         public static void main( final String[] args ) {
         final BagInterface<String> dictionaryBag = new ResizableArrayBag<>(98568);
         
@@ -26,21 +28,26 @@ public class Dictionary
             String text = scan.nextLine();
             while(scan.hasNextLine())
                 {
-                    dictionaryBag.add( text );
+                    dictionaryBag.add( text.toLowerCase() );
                     text = scan.nextLine();
-                    System.out.println(text);
 
                 }
             }
         catch ( FileNotFoundException e )
             {
-            // TODO Auto-generated catch block
             e.printStackTrace() ;
             }
-            
-        //System.out.println(dictionaryBag.contains( "flax" ));
+        
+            dictionaryBagResult = dictionaryBag;
         
     }
+        public BagInterface<String> getDictionaryBag()
+        {
+        main(null);
+        return this.dictionaryBagResult;
+        }
+        
+        
 
     }
 	// end class Dictionary
