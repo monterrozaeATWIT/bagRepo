@@ -14,89 +14,78 @@ import java.util.Scanner ;
  * @version 1.0.0 2021-09-27 Initial implementation
  *
  */
-public class SpellChecker
+public class Scanning
     {
-    public static void main( final String[] args ) throws FileNotFoundException {
-    final BagInterface<String> incorrectSpellingBag = new ResizableArrayBag<>(10_000);
-    final BagInterface<String> dictionaryBag = new ResizableArrayBag<>(98_568);
     
-    //
+    
+    private  BagInterface<String> dictionaryBag = new ResizableArrayBag<>(10_000);
+    private  Object[] lancashireArray;
+    private  Object[] witArray;
+    private  Object[] sourcesArray;
+    
+    /**
+     * no-arg constructor initializes instance variables
+     * 
+     */
+    public Scanning() 
+    {
+    
+    Scanner lancashire = null ;
+    Scanner wit = null;
+    Scanner sources = null;
+    Scanner dictionary = null;
+
     try
         {
-        Scanner scan = new Scanner(new BufferedReader(new FileReader("./data/american-english-JL.txt")));
-        String text = scan.nextLine();
-        while(scan.hasNextLine())
-            {
-                dictionaryBag.add( text.toLowerCase() );//used toLowerCase to ignore capitalization
-                text = scan.nextLine();
+        lancashire = new Scanner(new BufferedReader(new FileReader("./data/the-lancashire-cotton-famine.txt"))) ;
+        wit = new Scanner(new BufferedReader(new FileReader("./data/wit-attendance-policy.txt")));
+        sources = new Scanner(new BufferedReader(new FileReader("./data/sources.txt")));
+        dictionary = new Scanner(new BufferedReader(new FileReader("./data/american-english-JL.txt")));
 
-            }
-        }
-    catch ( FileNotFoundException e )
-        {
-        // TODO Auto-generated catch block
-        e.printStackTrace() ;
         }
     
-    //
-       
-    Scanner lancashire = new Scanner(new BufferedReader(new FileReader("./data/the-lancashire-cotton-famine.txt")));
-    Scanner wit = new Scanner(new BufferedReader(new FileReader("./data/wit-attendance-policy.txt")));
-    Scanner sources = new Scanner(new BufferedReader(new FileReader("./data/sources.txt")));
-
-    
-    Object[] lancashireArray = toArray(lancashire);
-    Object[] witArray = toArray(wit);
-    Object[] sourcesArray = toArray(sources);
-
-
-    for(int i = 0; i < witArray.length; i++) {
-    if(!dictionaryBag.contains((String) witArray[i] ))
+    catch ( FileNotFoundException e ) //In case the file is not found
         {
-            if(!incorrectSpellingBag.contains((String) witArray[i]))
-            incorrectSpellingBag.add((String) witArray[i] );
-            System.out.println( witArray[i] ) ;
+        System.out.println( "Missing files" ) ;
         }
+    
+    this.lancashireArray = toArray(lancashire);
+    this.witArray = toArray(wit);
+    this.sourcesArray = toArray(sources);
+    
+    String text = dictionary.nextLine();       //making the dictionary bag
+    while(dictionary.hasNextLine())
+        {
+            dictionaryBag.add( text.toLowerCase() );
+            text = dictionary.nextLine();
+
+        }
+    
+    
+    
     }
-    for(int i = 0; i < lancashireArray.length; i++) {
-    if(!dictionaryBag.contains((String) lancashireArray[i] ))
-        {
-            if(!incorrectSpellingBag.contains((String) lancashireArray[i]))
-            incorrectSpellingBag.add((String) lancashireArray[i] );
-            System.out.println( lancashireArray[i] ) ;
-        }
+    
+    
+    
+    
         
-    }
-    
-    if(!dictionaryBag.contains((String) sourcesArray[i] ))
-        {
-            if(!incorrectSpellingBag.contains((String) sourcesArray[i]))
-            incorrectSpellingBag.add((String) sourcesArray[i] );
-            System.out.println( sourcesArray[i] ) ;
-        }
-    }
-	    
-    
-    System.out.println( "================" ) ;
-        
-    Object[] printArray = incorrectSpellingBag.toArray();
-    
-    for(int i = 0; i < printArray.length; i++)
-        {
-        System.out.println( printArray[i] ) ;
-        }
-    }
-
-      public static Object[] toArray(Scanner scan)
+      /**
+     * Takes lines from the supplied text file and processes individual words, which is stored into an array 
+     * 
+     * 
+     * @return
+     */
+    public static Object[] toArray(Scanner scan)
       {
           final BagInterface<String> bag = new ResizableArrayBag<>(10_000);
           Object[] result;
           do {
           String text = scan.nextLine();
-          String[] arr = text.split("\\W+"); //uses regex to separate words from a line to an individual element in an array
-          for(int i = 0; i < arr.length; i++)       //currently not removing commas or periods, only separating words by spaces
+          
+          String[] arr = text.split("\\W+");//uses regex to separate words from a line to an individual element in an array
+          for(int i = 0; i < arr.length; i++)       //currently counting numbers as words somehow
               {
-                  if(!arr[i].equals( "" )) {       //ignore empty lines (for wit-attendance file)
+                  if(!arr[i].equals( "" )) {       //ignore empty lines (e.g. for wit-attendance file)
                   bag.add( arr[i].toLowerCase() ); //used toLowerCase to ignore capitalized words, since we are focusing on spelling
                   }
                   }                                    //also fixes issue of words spelled correctly, but put in the wrong bag due to capitalization
@@ -107,6 +96,45 @@ public class SpellChecker
           return result;
       }
 
+    
+    /**
+     * @return dictionaryBag
+     */
+    public BagInterface<String> getDictionaryBag()
+        {
+            
+            return dictionaryBag;
+        }
+    
+    /**
+     * @return the lancashireArray
+     */
+    public Object[] getLancashireArray()
+        {
+            return lancashireArray ;
+        }
+    
+    /**
+     * @return the sourcesArray
+     */
+    public Object[] getSourcesArray()
+        {
+            return sourcesArray ;
+        }
+    
+    /**
+     * @return the witArray
+     */
+    public Object[] getWitArray()
+        {
+            return witArray ;
+        }
+
+    public static void main( final String[] args )  {
+    
+    }
+
+ 
  
     }
-	// end class SpellChecker
+	// end class Scanning
